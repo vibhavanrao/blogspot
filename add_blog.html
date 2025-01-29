@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex justify-center items-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+        <h2 class="text-2xl font-semibold text-center mb-4">Add a New Blog</h2>
+        <form onsubmit="saveBlog(event)">
+            <label class="block text-gray-700 font-medium mb-1">Cover Image URL</label>
+            <input type="url" id="blogImage" class="block w-full border rounded-md p-2 mb-4" placeholder="Paste image URL" required>
+
+            <label class="block text-gray-700 font-medium mb-1">Blog Title</label>
+            <input type="text" id="blogTitle" class="block w-full border rounded-md p-2 mb-4" placeholder="Enter blog title" required>
+
+            <label class="block text-gray-700 font-medium mb-1">Description</label>
+            <textarea id="blogDescription" class="block w-full border rounded-md p-2 mb-4" placeholder="Write a short description..." required></textarea>
+
+            <button type="submit" class="bg-blue-500 text-white w-full py-2 rounded-md shadow-md hover:bg-blue-600">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        function saveBlog(event) {
+            event.preventDefault(); // Prevent form from refreshing page
+
+            let image = document.getElementById("blogImage").value;
+            let title = document.getElementById("blogTitle").value;
+            let description = document.getElementById("blogDescription").value;
+
+            let newBlog = { image, title, description };
+
+            // Retrieve existing blogs from localStorage
+            let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+            blogs.push(newBlog);
+
+            // Save updated blogs array back to localStorage
+            localStorage.setItem("blogs", JSON.stringify(blogs));
+
+            // Redirect to main page
+            window.location.href = "base.html";
+        }
+    </script>
+</body>
+</html>
