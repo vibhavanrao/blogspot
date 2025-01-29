@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="main.png">
+</head>
+<body>
+    <div class="flex justify-between bg-gray-200 h-15 shadow-xl">
+        <img src="header.png" alt="blogger title" width="90px" class="pl-2 left-item"> 
+        <ul class="flex space-x-4 right-item pt-3 pr-2">
+            <li class="flex pb-5"><img src="home.png" width="13px" class="mr-2">Home</li>
+            <li class="flex pb-5"><img src="info.png" width="13px">_About</li>
+            <li class="flex pb-5"><img src="log-in.png" width="13px">_Sign In</li>
+            <li class="flex pb-5"><img src="add-user.png" width="13px">_Create Account</li>
+        </ul>
+    </div>
+
+    <!-- Blog Post Grid -->
+    <div class="p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Blog Post 1 -->
+        <div class="group relative bg-white p-6 rounded-lg shadow-lg">
+            <img src="blog1.jpg" alt="Blog 1" class="w-full h-48 object-cover rounded-t-lg">
+            <h2 class="text-xl font-semibold mt-4">Blog Title 1</h2>
+            <p class="mt-2 text-gray-600">This is a short description of the blog content...</p>
+            
+            <!-- CRUD Actions (hidden by default, shown on hover) -->
+            <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="flex space-x-4">
+                    <button class="bg-green-500 px-4 py-2 rounded hover:bg-green-400 text-white">Create</button>
+                    <button class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-400 text-white">Edit</button>
+                    <button class="bg-red-500 px-4 py-2 rounded hover:bg-red-400 text-white">Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog Post 2 -->
+        <div class="group relative bg-white p-6 rounded-lg shadow-lg">
+            <img src="blog2.jpg" alt="Blog 2" class="w-full h-48 object-cover rounded-t-lg">
+            <h2 class="text-xl font-semibold mt-4">Blog Title 2</h2>
+            <p class="mt-2 text-gray-600">This is a short description of the blog content...</p>
+            
+            <!-- CRUD Actions (hidden by default, shown on hover) -->
+            <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="flex space-x-4">
+                    <button class="bg-green-500 px-4 py-2 rounded hover:bg-green-400 text-white">Create</button>
+                    <button class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-400 text-white">Edit</button>
+                    <button class="bg-red-500 px-4 py-2 rounded hover:bg-red-400 text-white">Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog Post 3 -->
+        <div class="group relative bg-white p-6 rounded-lg shadow-lg">
+            <img src="blog3.jpg" alt="Blog 3" class="w-full h-48 object-cover rounded-t-lg">
+            <h2 class="text-xl font-semibold mt-4">Blog Title 3</h2>
+            <p class="mt-2 text-gray-600">This is a short description of the blog content...</p>
+            
+            <!-- CRUD Actions (hidden by default, shown on hover) -->
+            <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="flex space-x-4">
+                    <button class="bg-green-500 px-4 py-2 rounded hover:bg-green-400 text-white">Create</button>
+                    <button class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-400 text-white">Edit</button>
+                    <button class="bg-red-500 px-4 py-2 rounded hover:bg-red-400 text-white">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
