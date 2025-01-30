@@ -19,24 +19,7 @@
     </div>
 
     <!-- Blog Section -->
-    <div id="blogContainer" class="p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Static Blogs -->
-        <div class="group relative p-6 rounded-lg shadow-lg">
-            <img src="pic1.jpg" alt="image describing blog" class="w-full h-48 object-cover rounded-t-lg">
-            <a href="https://www.techcrackblog.com/2025/01/-role-of-endpoint-detection-edr.html" class="text-xl font-semibold mt-4">The Role of Endpoint Detection in Automated Threat Response</a>
-            <p class="mt-2 text-gray-600">Today’s security landscape no longer gives SOCs the option to do things manually, not if they want to keep up....</p>
-        </div>
-        <div class="group relative p-6 rounded-lg shadow-lg">
-            <img src="pic2.jpg" alt="image describing blog" class="w-full h-48 object-cover rounded-t-lg">
-            <a href="https://www.techcrackblog.com/2024/12/cloud-migration-strategies.html" class="text-xl font-semibold mt-4">Cloud Migration Strategies: Which Approach is Best for Your Business?</a>
-            <p class="mt-2 text-gray-600">A cloud migration strategy refers to an overarching plan that an organization should follow when moving applications, databases, services, IT resources, or any digital asset to a cloud-based platform.....</p>
-        </div>
-        <div class="group relative p-6 rounded-lg shadow-lg">
-            <img src="pic3.jpg" alt="image describing blog" class="w-full h-48 object-cover rounded-t-lg">
-            <a href="https://www.techcrackblog.com/2024/12/future-of-cyber-defense-predictive-analytics.html" class="text-xl font-semibold mt-4">The Future of Cyber Defense: Predictive Analytics in Security Testing</a>
-            <p class="mt-2 text-gray-600">With the growing advancements in technological developments and smart integrations, the demand for cybersecurity is also increasing at a rapid rate.....</p>
-        </div>
-    </div>
+    <div id="blogContainer" class="p-8 grid grid-cols-1 md:grid-cols-3 gap-6"></div>
 
     <!-- Add Blog Section -->
     <div class="text-center mt-6">
@@ -47,24 +30,57 @@
         </a>
     </div>
 
-    <!-- JavaScript to Load New Blogs -->
+    <!-- JavaScript to Load, Track Views, Edit & Delete Blogs -->
     <script>
         function loadBlogs() {
             let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
             let blogContainer = document.getElementById("blogContainer");
+            blogContainer.innerHTML = ""; // Clear container before reloading
 
-            blogs.forEach(blog => {
+            blogs.forEach((blog, index) => {
                 let blogDiv = document.createElement("div");
-                blogDiv.classList.add("group", "relative", "p-6", "rounded-lg", "shadow-lg");
+                blogDiv.classList.add("group", "relative", "p-6", "rounded-lg", "shadow-lg", "border", "border-gray-300");
 
                 blogDiv.innerHTML = `
                     <img src="${blog.image}" alt="blog image" class="w-full h-48 object-cover rounded-t-lg">
-                    <h2 class="text-xl font-semibold mt-4">${blog.title}</h2>
+                    <a href="${blog.link}" class="text-xl font-semibold mt-4 text-blue-600 hover:underline block" target="_blank" onclick="trackView(${index})">${blog.title}</a>
                     <p class="mt-2 text-gray-600">${blog.description}</p>
+                    <p class="mt-2 text-gray-500 text-sm">Views: <span id="viewCount${index}">${blog.views || 0}</span></p>
+                    
+                    <button onclick="editBlog(${index})" class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">
+                        Edit
+                    </button>
+                    <button onclick="deleteBlog(${index})" class="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+                        Delete
+                    </button>
                 `;
 
                 blogContainer.appendChild(blogDiv);
             });
+        }
+
+        function deleteBlog(index) {
+            let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+            blogs.splice(index, 1); // Remove the blog at the given index
+            localStorage.setItem("blogs", JSON.stringify(blogs));
+            loadBlogs(); // Reload the updated blog list
+        }
+
+        function trackView(index) {
+            let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+            if (!blogs[index].views) {
+                blogs[index].views = 0;
+            }
+            blogs[index].views++; // Increment view count
+            localStorage.setItem("blogs", JSON.stringify(blogs));
+
+            // Update view count on the page instantly
+            document.getElementById(`viewCount${index}`).innerText = blogs[index].views;
+        }
+
+        function editBlog(index) {
+            localStorage.setItem("editIndex", index);
+            window.location.href = "edit_blog.html";
         }
     </script>
 </body>

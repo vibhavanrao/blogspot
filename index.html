@@ -7,8 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="main.png">
 </head>
-<body>
-    <div class = "flex justify-between bg-gray-200 h-15 shadow-xl">
+<body onload="loadBlogs()">
+    <div class="flex justify-between bg-gray-200 h-15 shadow-xl">
         <img src="header.png" alt="blogger title" width="90px" class="pl-2 left-item"> 
         <ul class="flex space-x-4 right-item pt-3 pr-2">
             <li class="flex pb-5"><img src="home.png" width="13px" class="mr-2">Home</li>
@@ -17,26 +17,48 @@
             <li class="flex pb-5"><img src="add-user.png" width="13px" class="mr-2">Create Account</li>
         </ul>
     </div>
-    <div class="p-8 grid-cols-1 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="group relative p-6 rounded-lg shadow-lg">
-            <img src="pic1.jpg" alt="image desribing blog" class="w-full h-48 object-cover rounded-t-lg">
-            <a href="https://www.techcrackblog.com/2025/01/-role-of-endpoint-detection-edr.html" class="text-xl font-semibold mt-4">The Role of Endpoint Detection in Automated Threat Response</a>
-            <p class="mt-2 text-gray-600">Today’s security landscape no longer gives SOCs the option to do things manually, not if they want to keep up....</p>
-            
-        
-        </div>
-        <div class="group relative p-6 rounded-lg shadow-lg">
-            <img src="pic2.jpg" alt="image desribing blog" class="w-full h-48 object-cover rounded-t-lg">
-            <a href="https://www.techcrackblog.com/2024/12/cloud-migration-strategies.html" class="text-xl font-semibold mt-4">Cloud Migration Strategies: Which Approach is Best for Your Business?</a>
-            <p class="mt-2 text-gray-600">A cloud migration strategy refers to an overarching plan that an organization should follow when moving applications, databases, services, IT resources, or any digital asset to a cloud-based platform.....</p>
-            
-        </div>
-        <div class="group relative p-6 rounded-lg shadow-lg">
-            <img src="pic3.jpg" alt="image desribing blog" class="w-full h-48 object-cover rounded-t-lg">
-            <a href="https://www.techcrackblog.com/2024/12/future-of-cyber-defense-predictive-analytics.html" class="text-xl font-semibold mt-4">The Future of Cyber Defense: Predictive Analytics in Security Testing</a>
-            <p class="mt-2 text-gray-600">With the growing advancements in technological developments and smart integrations, the demand for cybersecurity is also increasing at a rapid rate.....</p>
-            
-        </div>
+    <div id="blogContainer" class = "flex justify-between bg-gray-200 h-15 shadow-xl grid grid-cols-1 md:grid-cols-3"></div>
+
+    <!--section for adding a blog-->
+    <div class="text-center mt-6">
+        <a href="add.html">
+            <button class="text-xl p-4 bg-blue-500 rounded-lg shadow-xl hover:bg-blue-700 hover:text-white">
+                Add New Blog
+            </button>
+        </a>
     </div>
+    <script>
+        function loadBlogs(){
+            let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+            let blogContainer = document.getElementById("blogContainer");
+            blogContainer.innerHTML = ""
+            blogs.forEach((blog,index) =>{
+                let blogDiv = document.createElement("div");
+                blogDiv.classList.add("group", "relative", "p-6", "rounded-lg", "shadow-lg", "border", "border-gray-300");
+
+                blogDiv.innerHTML = `
+                    <img src="${blog.image}" alt="blog image" class="w-full h-48 object-cover rounded-t-lg">
+                    <a href="${blog.link}" class="text-xl font-semibold mt-4 text-blue-600 hover:underline block" target="_blank" onclick="trackView(${index})">${blog.title}</a>
+                    <p class="mt-2 text-gray-600">${blog.description}</p>
+                    <p class="mt-2 text-gray-500 text-sm">Views: <span id="viewCount${index}">${blog.views || 0}</span></p>
+                    
+                    <button onclick="editBlog(${index})" class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">
+                        Edit
+                    </button>
+                    <button onclick="deleteBlog(${index})" class="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+                        Delete
+                    </button>
+                `;
+                blogContainer.appendChild(blogDiv);
+            });
+        }
+
+        function deleteBlog(){
+            let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+            blogs.splice(index,1);
+            blogs.setItem("blogs",JSON.stringify(blogs));
+            loadBlogs();
+        }
+    </script>
 </body>
 </html>

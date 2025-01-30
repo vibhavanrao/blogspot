@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex justify-center items-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+        <h2 class="text-2xl font-semibold text-center mb-4">Edit Blog</h2>
+        <form onsubmit="updateBlog(event)">
+            <label class="block text-gray-700 font-medium mb-1">Cover Image</label>
+            <input type="file" id="blogImage" class="block w-full border rounded-md p-2 mb-4" accept="image/*">
+
+            <label class="block text-gray-700 font-medium mb-1">Blog Title</label>
+            <input type="text" id="blogTitle" class="block w-full border rounded-md p-2 mb-4" required>
+
+            <label class="block text-gray-700 font-medium mb-1">Blog Link</label>
+            <input type="url" id="blogLink" class="block w-full border rounded-md p-2 mb-4" required>
+
+            <label class="block text-gray-700 font-medium mb-1">Description</label>
+            <textarea id="blogDescription" class="block w-full border rounded-md p-2 mb-4" required></textarea>
+
+            <button type="submit" class="bg-green-500 text-white w-full py-2 rounded-md shadow-md hover:bg-green-600">Save Changes</button>
+        </form>
+    </div>
+
+    <script>
+        let index = localStorage.getItem("editIndex");
+        let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+
+        if (index !== null) {
+            let blog = blogs[index];
+            document.getElementById("blogTitle").value = blog.title;
+            document.getElementById("blogLink").value = blog.link;
+            document.getElementById("blogDescription").value = blog.description;
+        }
+
+        function updateBlog(event) {
+            event.preventDefault();
+
+            let title = document.getElementById("blogTitle").value;
+            let link = document.getElementById("blogLink").value;
+            let description = document.getElementById("blogDescription").value;
+            let fileInput = document.getElementById("blogImage");
+
+            if (fileInput.files.length > 0) {
+                let reader = new FileReader();
+                reader.onloadend = function () {
+                    blogs[index].image = reader.result;
+                    saveChanges(title, link, description);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                saveChanges(title, link, description);
+            }
+        }
+
+        function saveChanges(title, link, description) {
+            blogs[index].title = title;
+            blogs[index].link = link;
+            blogs[index].description = description;
+            localStorage.setItem("blogs", JSON.stringify(blogs));
+            localStorage.removeItem("editIndex");
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

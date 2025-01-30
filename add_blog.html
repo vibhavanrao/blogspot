@@ -10,11 +10,14 @@
     <div class="bg-white p-8 rounded-lg shadow-lg w-96">
         <h2 class="text-2xl font-semibold text-center mb-4">Add a New Blog</h2>
         <form onsubmit="saveBlog(event)">
-            <label class="block text-gray-700 font-medium mb-1">Cover Image URL</label>
-            <input type="url" id="blogImage" class="block w-full border rounded-md p-2 mb-4" placeholder="Paste image URL" required>
+            <label class="block text-gray-700 font-medium mb-1">Cover Image</label>
+            <input type="file" id="blogImage" class="block w-full border rounded-md p-2 mb-4" accept="image/*" required>
 
             <label class="block text-gray-700 font-medium mb-1">Blog Title</label>
             <input type="text" id="blogTitle" class="block w-full border rounded-md p-2 mb-4" placeholder="Enter blog title" required>
+
+            <label class="block text-gray-700 font-medium mb-1">Blog Link</label>
+            <input type="url" id="blogLink" class="block w-full border rounded-md p-2 mb-4" placeholder="Paste blog URL" required>
 
             <label class="block text-gray-700 font-medium mb-1">Description</label>
             <textarea id="blogDescription" class="block w-full border rounded-md p-2 mb-4" placeholder="Write a short description..." required></textarea>
@@ -25,23 +28,38 @@
 
     <script>
         function saveBlog(event) {
-            event.preventDefault(); // Prevent form from refreshing page
-
-            let image = document.getElementById("blogImage").value;
+            event.preventDefault(); // Prevent default form submission
+            
             let title = document.getElementById("blogTitle").value;
+            let link = document.getElementById("blogLink").value;
             let description = document.getElementById("blogDescription").value;
+            let fileInput = document.getElementById("blogImage");
 
-            let newBlog = { image, title, description };
+            if (fileInput.files.length === 0) {
+                alert("Please upload an image.");
+                return;
+            }
 
-            // Retrieve existing blogs from localStorage
-            let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
-            blogs.push(newBlog);
+            let file = fileInput.files[0];
+            let reader = new FileReader();
+            
+            reader.onloadend = function () {
+                let image = reader.result; // Convert image to Base64
 
-            // Save updated blogs array back to localStorage
-            localStorage.setItem("blogs", JSON.stringify(blogs));
+                let newBlog = { image, title, link, description };
 
-            // Redirect to main page
-            window.location.href = "base.html";
+                // Retrieve existing blogs from localStorage
+                let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+                blogs.push(newBlog);
+
+                // Save updated blogs array back to localStorage
+                localStorage.setItem("blogs", JSON.stringify(blogs));
+
+                // Redirect to main page
+                window.location.href = "base.html";
+            };
+
+            reader.readAsDataURL(file);
         }
     </script>
 </body>
